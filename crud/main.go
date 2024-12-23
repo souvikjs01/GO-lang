@@ -32,7 +32,7 @@ func main() {
 		fmt.Println("error in getting response", res.Status)
 		return
 	}
-
+	// it already a json data
 	// data, err1 := ioutil.ReadAll(res.Body)
 
 	// if err1 != nil {
@@ -41,6 +41,7 @@ func main() {
 	// }
 	// fmt.Println(string(data))
 
+	// it is preffered
 	var todo Todos
 	err3 := json.NewDecoder(res.Body).Decode(&todo)
 
