@@ -5,7 +5,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 type Todos struct {
@@ -15,7 +17,7 @@ type Todos struct {
 	UserId    int    `json:userId`
 }
 
-func main() {
+func getReq() {
 	fmt.Println("learning Get request")
 
 	res, err := http.Get("https://dummyjson.com/todos/1")
@@ -50,5 +52,41 @@ func main() {
 		return
 	}
 	fmt.Println("todo:", todo)
+}
+
+type Todo struct {
+	UserId    int    `json:userId`
+	Id        int    `json:id`
+	Title     string `json:title`
+	Completed bool   `json:completed`
+}
+
+func postReq() {
+	todo := Todo{30, 2, "go to gym", false}
+	// convert it to json data:
+	fmt.Println(todo.UserId)
+	jsonData, _ := json.Marshal(todo)
+
+	jsonStr := string(jsonData)
+	// convert string data to reader:
+	jsonReader := strings.NewReader(jsonStr)
+
+	res, err := http.Post("https://jsonplaceholder.typicode.com/todos", "application/json", jsonReader)
+
+	if err != nil {
+		fmt.Println("error while posting", err)
+		return
+	}
+	defer res.Body.Close()
+
+	data, _ := ioutil.ReadAll(res.Body)
+	fmt.Println("response: ", string(data))
+
+}
+
+func main() {
+	// getReq()
+
+	postReq()
 
 }
