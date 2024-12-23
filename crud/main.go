@@ -84,6 +84,42 @@ func postReq() {
 
 }
 
+func updateMethod() {
+	const updateURL = "https://jsonplaceholder.typicode.com/todos/1"
+
+	todo := Todo{1, 2, "go to gym", false}
+
+	// convert to json data:
+	jsonData, err := json.Marshal(todo)
+	if err != nil {
+		fmt.Println("error while converting")
+		return
+	}
+
+	jsonStr := string(jsonData)
+	jsonReader := strings.NewReader(jsonStr)
+
+	// create PUT request:
+	req, err2 := http.NewRequest(http.MethodPut, updateURL, jsonReader)
+	if err2 != nil {
+		fmt.Println("error creating put request", err2)
+		return
+	}
+	req.Header.Set("Content-type", "application/json")
+
+	// send the request:
+	client := http.Client{}
+	res, err3 := client.Do(req)
+	if err2 != nil {
+		fmt.Println("error sending request", err3)
+		return
+	}
+	defer res.Body.Close()
+	data, _ := ioutil.ReadAll(res.Body)
+	fmt.Println("response: ", string(data))
+	fmt.Println("response status:", res.Status)
+}
+
 func deleteMethod() {
 	const url = "https://jsonplaceholder.typicode.com/todos/1"
 	// delete request:
@@ -112,7 +148,7 @@ func main() {
 
 	// postReq()
 
-	// updateMethod()
+	updateMethod()
 
-	deleteMethod()
+	// deleteMethod()
 }
