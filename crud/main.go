@@ -84,9 +84,35 @@ func postReq() {
 
 }
 
+func deleteMethod() {
+	const url = "https://jsonplaceholder.typicode.com/todos/1"
+	// delete request:
+	req, err := http.NewRequest(http.MethodDelete, url, nil)
+	if err != nil {
+		fmt.Println("error while deleteing")
+		return
+	}
+	// send the request:
+	client := http.Client{}
+	res, err2 := client.Do(req)
+	if err2 != nil {
+		fmt.Println("error sending request", err2)
+		return
+	}
+	defer res.Body.Close()
+
+	data, _ := ioutil.ReadAll(res.Body)
+	fmt.Println("response: ", string(data))
+	fmt.Println("status: ", res.Status)
+
+}
+
 func main() {
 	// getReq()
 
-	postReq()
+	// postReq()
 
+	// updateMethod()
+
+	deleteMethod()
 }
