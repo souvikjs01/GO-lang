@@ -44,6 +44,8 @@ import (
 //			time.Sleep(time.Second)
 //		}
 //	}
+
+/*
 func main() {
 	chan1 := make(chan int)
 	chan2 := make(chan string)
@@ -112,4 +114,26 @@ func main() {
 	// msg := <- messageChan
 
 	// fmt.Println(msg)
+}
+
+*/
+
+func fibonacci(n int, c chan int) {
+	a, b := 0, 1
+	for i := 0; i < n; i++ {
+		c <- a
+		a, b = b, a+b
+	}
+	close(c)
+}
+
+func main() {
+	// buffered channel:
+	c := make(chan int, 10)
+	go fibonacci(5, c)
+
+	// sequencially
+	for i := range c {
+		fmt.Println(i)
+	}
 }
