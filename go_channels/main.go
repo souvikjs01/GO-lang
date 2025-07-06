@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
+	"sync"
+	"time"
 )
 
 // func worker(ch chan string) {
@@ -118,6 +121,7 @@ func main() {
 
 */
 
+/*
 func fibonacci(n int, c chan int) {
 	a, b := 0, 1
 	for i := 0; i < n; i++ {
@@ -135,5 +139,32 @@ func main() {
 	// sequencially
 	for i := range c {
 		fmt.Println(i)
+	}
+}
+*/
+
+func randValue() int {
+	time.Sleep(1 * time.Second)
+	return rand.Intn(100)
+}
+
+func main() {
+	dataChan := make(chan int)
+	go func() {
+		var wg sync.WaitGroup
+		for i := 0; i < 100; i++ {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				someNum := randValue()
+				dataChan <- someNum
+			}()
+		}
+		wg.Wait()
+		close(dataChan)
+	}()
+
+	for num := range dataChan {
+		fmt.Println("n =", num)
 	}
 }

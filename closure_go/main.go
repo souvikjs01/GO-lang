@@ -20,10 +20,23 @@ func adder(x int) func(y int) int {
 	}
 }
 
-func main() {
-	add5 := adder(5)
-	fmt.Println(add5(3))
+func counter(n int) func() int {
+	count := n
+	return func() int {
+		count++
+		return count
+	}
+}
 
-	add10 := adder(10)
-	fmt.Println(add10(5))
+func main() {
+	// add5 := adder(5)
+	// fmt.Println(add5(3))
+
+	// add10 := adder(10)
+	// fmt.Println(add10(5))
+
+	next := counter(10)
+	fmt.Println(next())
+	fmt.Println(next())
+	fmt.Println(next())
 }
