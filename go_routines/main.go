@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"sync"
 	"time"
 )
@@ -29,7 +30,7 @@ func main() {
 */
 
 // example :2
-
+/*
 type Message struct {
 	chats   []string
 	friends []string
@@ -91,4 +92,24 @@ func getUserFriends(id string, ch chan<- *Message, wg *sync.WaitGroup) {
 		},
 	}
 	wg.Done()
+}
+*/
+
+func randHun() int {
+	time.Sleep(1 * time.Second)
+	return rand.Intn(100)
+}
+
+func main() {
+	var wg sync.WaitGroup
+	for i := 0; i < 100; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			n := randHun()
+			fmt.Println("i =", i+1, "n =", n)
+		}()
+	}
+	wg.Wait()
+	fmt.Println("Process complete...")
 }
