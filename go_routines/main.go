@@ -2,9 +2,7 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 	"sync"
-	"time"
 )
 
 /*
@@ -95,6 +93,7 @@ func getUserFriends(id string, ch chan<- *Message, wg *sync.WaitGroup) {
 }
 */
 
+/*
 func randHun() int {
 	time.Sleep(1 * time.Second)
 	return rand.Intn(100)
@@ -112,4 +111,50 @@ func main() {
 	}
 	wg.Wait()
 	fmt.Println("Process complete...")
+}
+*/
+
+// printing odd and even using go routines:
+
+func main() {
+	n := 50
+
+	oddChan := make(chan int)
+	evenChan := make(chan int)
+
+	var wg sync.WaitGroup
+	wg.Add(2)
+
+	// odd go routine
+	go func() {
+		defer wg.Done()
+
+		for num := range oddChan {
+			if num > n {
+				close(oddChan)
+				close(evenChan)
+				break
+			}
+			fmt.Println(num)
+			evenChan <- num + 1
+		}
+	}()
+
+	go func() {
+		defer wg.Done()
+
+		for num := range evenChan {
+			if num > n {
+				close(evenChan)
+				close(oddChan)
+				break
+			}
+			fmt.Println(num)
+			oddChan <- num + 1
+		}
+	}()
+
+	oddChan <- 1
+
+	wg.Wait()
 }
