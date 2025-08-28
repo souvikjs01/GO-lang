@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"math"
 )
 
+/*
 type MyFloat float64
 
 func (f MyFloat) Abs() float64 {
@@ -17,4 +17,19 @@ func (f MyFloat) Abs() float64 {
 func main() {
 	f := MyFloat(-math.Sqrt(2))
 	fmt.Println(f.Abs())
+}
+*/
+
+type X struct {
+	data []int
+}
+
+func modify(x X) {
+	x.data[0] = 100
+}
+
+func main() {
+	obj := X{data: []int{1, 2, 3, 4}}
+	modify(obj)
+	fmt.Println(obj.data[0])
 }
