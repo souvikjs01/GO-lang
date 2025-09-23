@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 /*
 type Shape interface {
@@ -121,28 +124,71 @@ func main() {
 // }
 
 //-------------------------------------------------
-type Printer interface {
-	Print()
+// type Printer interface {
+// 	Print()
+// }
+
+// type Scanner interface {
+// 	Scan()
+// }
+
+// type AllInOne struct{}
+
+// func (AllInOne) Print() {
+// 	fmt.Println("Printing...")
+// }
+
+// func (AllInOne) Scan() {
+// 	fmt.Println("Scanning...")
+// }
+
+// func main() {
+// 	var p Printer = AllInOne{}
+// 	var s Scanner = AllInOne{}
+
+// 	p.Print()
+// 	s.Scan()
+// }
+
+//--------------------------------------
+
+type Shape interface {
+	Area() float32
+	Perimeter() float32
 }
 
-type Scanner interface {
-	Scan()
+type Circle struct {
+	radius float32
 }
 
-type AllInOne struct{}
-
-func (AllInOne) Print() {
-	fmt.Println("Printing...")
+func (c *Circle) Area() float32 {
+	return math.Pi * c.radius * c.radius
 }
 
-func (AllInOne) Scan() {
-	fmt.Println("Scanning...")
+func (c *Circle) Perimeter() float32 {
+	return 2 * math.Pi * c.radius
+}
+
+type Rectangle struct {
+	length float32
+	width  float32
+}
+
+func (r *Rectangle) Area() float32 {
+	return r.length * r.width
+}
+
+func (r *Rectangle) Perimeter() float32 {
+	return 2 * (r.length + r.width)
 }
 
 func main() {
-	var p Printer = AllInOne{}
-	var s Scanner = AllInOne{}
+	cir := Circle{radius: 7}
+	rect := Rectangle{length: 4, width: 2}
 
-	p.Print()
-	s.Scan()
+	fmt.Println("area of circle", cir.Area())
+	fmt.Println("perimeter of circle", cir.Perimeter())
+
+	fmt.Println("area of rectangle", rect.Area())
+	fmt.Println("perimeter of rectangle", rect.Perimeter())
 }
